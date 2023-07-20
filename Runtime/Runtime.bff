@@ -1,0 +1,55 @@
+.VSBasePath         = 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Community'
+.WindowsSDKBasePath = 'C:\Program Files (x86)\Windows Kits\10'
+
+// X86 ToolChain
+//------------------------------------------------------------------------------
+.Compiler           = '$VSBasePath$\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64\cl.exe'
+.CompilerOptions    = '"%1"'           // Input
+                    + ' /Fo"%2"'       // Output
+                    + ' /Z7'           // Debug format (in .obj)
+                    + ' /c'            // Compile only
+                    + ' /nologo'       // No compiler spam
+                    + ' /W4'           // Warning level 4
+                    + ' /WX'           // Warnings as errors
+.Linker             = '$VSBasePath$\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64\link.exe'
+.LinkerOptions      = ' /OUT:"%2"'     // Output
+                    + ' "%1"'          // Input
+                    + ' /WX'           // Warnings as errors
+                    + ' /NOLOGO'       // No linker spam
+                    + ' /DEBUG'        // Keep debug info when linking
+                    + ' /NODEFAULTLIB' // We'll specify the libs explicitly
+
+// Include paths
+//------------------------------------------------------------------------------
+.BaseIncludePaths   = ' /I"./"'
+                    + ' /I"../"'
+                    + ' /I"$VSBasePath$/VC/Tools/MSVC/14.29.30133/include"'
+                    + ' /I"$WindowsSDKBasePath$/Include/10.0.19041.0/ucrt"'
+.CompilerOptions    + .BaseIncludePaths
+
+// Library paths
+//------------------------------------------------------------------------------
+.LibPaths           = ' /LIBPATH:"$WindowsSDKBasePath$\Lib\10.0.19041.0\um\x64"'
+                    + ' /LIBPATH:"$VSBasePath$\VC\Tools\MSVC\14.29.30133\lib\x64"'
+                    + ' /LIBPATH:"$WindowsSDKBasePath$\Lib\10.0.19041.0\ucrt\x64"'
+.LinkerOptions      + .LibPaths
+
+// HelloWorld
+//------------------------------------------------------------------------------
+ObjectList( 'RuntimeLib' )
+{
+    .CompilerInputPath  = '\'
+    .CompilerOutputPath = 'Out\'
+}
+
+Library( 'Runtime' )
+{
+    .Librarian          = 'Out\Runtime.lib'
+    .LibrarianOptions  = '%1 %2'
+    .LibrarianOutput       = 'Out\Runtime.lib'
+    .LinkerOptions      + ' libcmt.lib'     // Std Lib (Multi-Threaded, Static, Release)
+                        + ' msvcrt.lib'
+                        + ' vcruntime.lib'
+                        + ' ucrt.lib'
+                        + ' kernel32.lib'   // Kernel functions
+}

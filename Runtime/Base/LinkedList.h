@@ -1,6 +1,6 @@
 #pragma once
-namespace Alice
-{
+namespace Alice{
+	template<typename T>
 	class LinkedList{
 	public:
 		LinkedList() :mNext(nullptr){
@@ -26,9 +26,20 @@ namespace Alice
 			}
 		}
 		LinkedList*mNext;
+		T* mElement;
 		template<typename T>
 		T* Next(){
 			return (T*)mNext;
+		}
+		T* operator->(){
+			return mElement;
+		}
+		T* operator->() const{
+			return mElement;
+		}
+		void operator+=(T*inElementPtr){
+		}
+		void operator-=(T*inElementPtr){
 		}
 	};
 	class DoubleLinkedList{

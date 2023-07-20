@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "istream": "cpp",
+        "memory": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp",
+        "xlocnum": "cpp",
+        "xutility": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+}
